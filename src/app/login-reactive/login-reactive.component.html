@@ -3,14 +3,48 @@
   <mat-card-content>
     <form class="login-form data-form" [formGroup]="form">
       <mat-form-field>
-        <input matInput type="email" name="email" placeholder="Email" [formControl]="email" />
+        <input matInput type="email" name="email" placeholder="Email" formControlName="email" />
+
+        @if (email.touched && email.errors?.['required']) {
+          <mat-error>The email is mandatory.</mat-error>
+        }
+
+        @if (email.touched && email.errors?.['minlength']) {
+          <mat-error>
+            Your email must have minimum
+            {{ email.errors?.['minlength']?.requiredLength }}
+            characters but it only has
+            {{ email.errors?.['minlength']?.actualLength }}
+          </mat-error>
+        }
+
+        @if (email.touched && email.errors?.['email']) {
+          <mat-error>This is not a valid email.</mat-error>
+        }
       </mat-form-field>
 
       <mat-form-field>
-        <input matInput type="password" placeholder="Password" [formControl]="password" />
+        <input matInput type="password" placeholder="Password" formControlName="password" />
+
+        @if (password.touched && password.errors?.['required']) {
+          <mat-error>The password is mandatory.</mat-error>
+        }
+
+        @if (password.touched && password.errors?.['minlength']) {
+          <mat-error>
+            Your password must have minimum
+            {{ password.errors?.['minlength']?.requiredLength }}
+            characters but it only has
+            {{ password.errors?.['minlength']?.actualLength }}
+          </mat-error>
+        }
+
+        @if (password.touched && password.errors?.['passwordStrength']) {
+          <mat-error>Your password is not strong enough.</mat-error>
+        }
       </mat-form-field>
 
-      <button mat-raised-button color="primary">Login</button>
+      <button mat-raised-button color="primary" [disabled]="!form.valid">Login</button>
     </form>
 
     <div class="form-val">
