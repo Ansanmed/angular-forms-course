@@ -1,5 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NonNullableFormBuilder,
+  Validators,
+} from '@angular/forms';
 
 import { createPasswordStrengthValidator } from '../validators/password-validator';
 
@@ -10,9 +16,10 @@ import { createPasswordStrengthValidator } from '../validators/password-validato
   standalone: false,
 })
 export class LoginReactiveComponent implements OnInit {
-  private readonly fb = inject(FormBuilder);
+  //private readonly fb = inject(FormBuilder);
+  private readonly fb = inject(NonNullableFormBuilder); //esto hace que los fields no sean null, cuando haces reset por ejmplo siempre pone los valores por defecto
 
-  /* Esta es la forma antigua de hacerlo, instanciando directamente el form group
+  /* zEsta es la forma antigua de hacerlo, instanciando directamente el form group
   email = new FormControl('', {
     validators: [Validators.required, Validators.email],
     updateOn: 'blur',
@@ -53,4 +60,8 @@ export class LoginReactiveComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  reset() {
+    this.form.reset();
+  }
 }
